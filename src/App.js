@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import MapDisplay from './components/map';
+import InputBox from './components/inputWkt';
+import OutputBox from './components/outputWkt';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    lat: 51.505,
+    lng: -0.09,
+    zoom: 5,
+    userPoly: [],
+    nodes: []
+  }
+
+  getPolygon = (nodes) => {
+    this.setState({userPoly: nodes});
+  }
+
+  nodes = (nodes) => {
+    this.setState({nodes: nodes});
+  }
+
+
+  render() {
+    return (
+      <div>
+        <div>
+          <h1>My Glorious Map</h1>
+          <div id="float-left">
+            <InputBox userPolygon={this.getPolygon} nodes={this.nodes}/>
+          </div>
+          <div id="float-right">
+            <OutputBox nodes={this.state.nodes}/>
+          </div>
+        </div>
+        <div id="mapid">
+          <MapDisplay input={this.state.userPoly}/>
+        </div>
+      </div>);
+  }
 }
 
 export default App;
