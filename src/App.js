@@ -9,7 +9,8 @@ class App extends Component {
     lng: -0.09,
     zoom: 5,
     userPoly: [],
-    nodes: []
+    nodes: [],
+    tolerance: 1
   }
 
   getPolygon = (nodes) => {
@@ -20,21 +21,23 @@ class App extends Component {
     this.setState({nodes: nodes});
   }
 
+  tolerance = (tolerance) => {
+    this.setState({tolerance: tolerance})
+  }
+
 
   render() {
     return (
       <div>
-        <div>
-          <h1>My Glorious Map</h1>
-          <div id="float-left">
-            <InputBox userPolygon={this.getPolygon} nodes={this.nodes}/>
-          </div>
-          <div id="float-right">
-            <OutputBox nodes={this.state.nodes}/>
-          </div>
+        <h1>My Glorious Map</h1>
+        <div id="intro">
+          <InputBox userPolygon={this.getPolygon} nodes={this.nodes} tolerance={this.tolerance}/>
+        </div>
+        <div id='spaceBelow'>
+          <OutputBox nodes={this.state.nodes} tolerance={this.state.tolerance}/>
         </div>
         <div id="mapid">
-          <MapDisplay input={this.state.userPoly}/>
+          <MapDisplay input={this.state.nodes} tolerance={this.state.tolerance}/>
         </div>
       </div>);
   }
