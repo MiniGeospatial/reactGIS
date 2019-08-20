@@ -42,6 +42,7 @@ export default class InputBox extends Component {
   render() {
     return (
       <Popup trigger={<button>Enter wkt</button>} modal>
+      {close => (
         <div id="intro">
           <div id="float-left">
             <h2>Input Wkt</h2>
@@ -61,12 +62,13 @@ export default class InputBox extends Component {
               min="1"
               onChange={this.updateTolerance}
               defaultValue="1"/>
-            <button onClick={this.onButtonPress}>
+            <button onClick={close} >
               Reduce
             </button>
           </div>
           <div id="clear"></div>
         </div>
+      )}
       </Popup>
     )
   }
