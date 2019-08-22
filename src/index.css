@@ -12,6 +12,13 @@ h1 {
   text-align: center;
   color: #FF8c00;
   opacity: 1;
+  font-family: 'Brush Script MT', cursive;
+  font-size: 3em;
+  text-shadow: 1px 1px 1px #333;
+  text-transform: capitalize;
+  letter-spacing: 10px;
+  font-weight: 10px;
+  margin: 10px;
 }
 
 h2 {
@@ -73,6 +80,7 @@ h2 {
 .bm-menu-wrap {
   position: fixed;
   height: 100%;
+  transition: 'stack';
 }
 
 /* General sidebar styles */
