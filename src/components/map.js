@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Map, TileLayer, Polygon, Popup, LayersControl, ZoomControl} from 'react-leaflet';
 import { toGoogle } from '../utils/polygonConvert';
+import { getExtents } from '../utils/extents';
 import { toWkt } from '../utils/wkt';
 const { BaseLayer, Overlay } = LayersControl;
 
@@ -8,9 +9,7 @@ export default class MapDisplay extends Component {
   constructor(props) {
     super(props);
       this.state = {
-        lat: 53.552796,
-        lng: -2.3794198,
-        zoom: 16,
+        bounds: toGoogle([[374750, 406050], [375151, 406571]]),
         layers: [],
         height: 0
       }
@@ -33,23 +32,12 @@ export default class MapDisplay extends Component {
     this.setState({ height: window.innerHeight });
   }
 
-  centrePoint() {
-    if (this.props.layers.length > 0) {
-      const lastPolygon = this.props.layers[this.props.layers.length -1].nodes
-      const latlngs = toGoogle(lastPolygon);
-
-      const lats = latlngs.map(latlng => latlng[0]);
-      const lngs = latlngs.map(latlng => latlng[1]);
-
-      const latSum = Math.min(...lats) + Math.max(...lats);
-      const lngSum = Math.min(...lngs) + Math.max(...lngs);
-
-      const lat = latSum / 2
-      const lng = lngSum / 2
-
-      return [lat, lng];
+  bounds() {
+    if (this.props.layers.length > 0 ) {
+      const lastPolygon = this.props.layers[this.props.layers.length - 1].nodes;
+      return toGoogle(getExtents(lastPolygon));
     } else {
-      return [this.state.lat, this.state.lng]
+      return this.state.bounds;
     }
   }
 
@@ -72,10 +60,8 @@ export default class MapDisplay extends Component {
   }
 
   render() {
-    const center = this.centrePoint()
-
     return (
-      <Map center={center} zoom={this.state.zoom} zoomControl={false} style={{height: this.state.height}}>
+      <Map bounds={this.bounds()} zoomControl={false} style={{height: this.state.height}}>
         <LayersControl position="bottomright">
           <BaseLayer checked name="OpenStreetMap">
             <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
