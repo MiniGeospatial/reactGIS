@@ -3,7 +3,6 @@ import { Map, TileLayer, Polygon, Popup, LayersControl, ZoomControl} from 'react
 import { toGoogle } from '../utils/polygonConvert';
 import { toWkt } from '../utils/wkt';
 const { BaseLayer, Overlay } = LayersControl;
-// import L from 'leaflet';
 
 export default class MapDisplay extends Component {
   constructor(props) {
@@ -12,8 +11,26 @@ export default class MapDisplay extends Component {
         lat: 53.552796,
         lng: -2.3794198,
         zoom: 16,
-        layers: []
+        layers: [],
+        height: 0
       }
+    this.updateDimensions = this.updateDimensions.bind(this);
+  }
+
+  componentWillMount() {
+    this.updateDimensions();
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
+
+  updateDimensions() {
+    this.setState({ height: window.innerHeight });
   }
 
   centrePoint() {
@@ -58,9 +75,8 @@ export default class MapDisplay extends Component {
     const center = this.centrePoint()
 
     return (
-      <Map center={center} zoom={this.state.zoom} zoomControl={false}>
-        <ZoomControl position="bottomleft" />
-        <LayersControl position="bottomleft">
+      <Map center={center} zoom={this.state.zoom} zoomControl={false} style={{height: this.state.height}}>
+        <LayersControl position="bottomright">
           <BaseLayer checked name="OpenStreetMap">
             <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
               attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
@@ -69,6 +85,7 @@ export default class MapDisplay extends Component {
           </BaseLayer>
           {this.polygon()}
         </LayersControl>
+        <ZoomControl position="bottomright" />
       </Map>
     )
   }
