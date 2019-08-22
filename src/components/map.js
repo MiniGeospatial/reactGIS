@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Map, TileLayer, Polygon, Popup } from 'react-leaflet';
+import { Map, TileLayer, Polygon, Popup, LayersControl, ZoomControl} from 'react-leaflet';
 import { toGoogle } from '../utils/polygonConvert';
-import { dp } from '../utils/dp';
+import { toWkt } from '../utils/wkt';
+const { BaseLayer, Overlay } = LayersControl;
 // import L from 'leaflet';
 
 export default class MapDisplay extends Component {
@@ -10,13 +11,15 @@ export default class MapDisplay extends Component {
       this.state = {
         lat: 53.552796,
         lng: -2.3794198,
-        zoom: 16
+        zoom: 16,
+        layers: []
       }
   }
 
   centrePoint() {
-    if (this.props.input.length > 0) {
-      const latlngs = toGoogle(dp(this.props.input, this.props.tolerance));
+    if (this.props.layers.length > 0) {
+      const lastPolygon = this.props.layers[this.props.layers.length -1].nodes
+      const latlngs = toGoogle(lastPolygon);
 
       const lats = latlngs.map(latlng => latlng[0]);
       const lngs = latlngs.map(latlng => latlng[1]);
@@ -34,30 +37,20 @@ export default class MapDisplay extends Component {
   }
 
   polygon() {
-    if (this.props.input.length > 0 ){
-      return (
-        <div>
-          <Polygon positions={toGoogle(this.props.input)}
-            color="black"
-            weight="4">
+    if (this.props.layers.length > 0 ){
+      return( this.props.layers.map((p) => {
+        return (
+          <Overlay checked name={p.name} >
+            <Polygon positions={toGoogle(p.nodes)}
+              color={`#${p.layerKey}`}
+              weight="2">
             <Popup>
-              The original
+              {toWkt(p.nodes)}
             </Popup>
           </Polygon>
-          <Polygon positions={toGoogle(dp(this.props.input, this.props.tolerance))}
-            color="green"
-            weight="3">
-            <Popup>
-              One badass polygon
-            </Popup>
-          </Polygon>
-        </div>
-      )
-    } else {
-      return(
-        <Polygon positions={[]}>
-        </Polygon>
-      )
+        </Overlay>
+        )
+      }));
     }
   }
 
@@ -65,12 +58,17 @@ export default class MapDisplay extends Component {
     const center = this.centrePoint()
 
     return (
-      <Map center={center} zoom={this.state.zoom}>
-        <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-          attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-          maxZoom="18"
-        />
-        {this.polygon()}
+      <Map center={center} zoom={this.state.zoom} zoomControl={false}>
+        <ZoomControl position="bottomleft" />
+        <LayersControl position="bottomleft">
+          <BaseLayer checked name="OpenStreetMap">
+            <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+              maxZoom="18"
+            />
+          </BaseLayer>
+          {this.polygon()}
+        </LayersControl>
       </Map>
     )
   }
