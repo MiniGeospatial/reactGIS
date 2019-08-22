@@ -58,7 +58,7 @@ export default class MapDisplay extends Component {
     const center = this.centrePoint()
 
     return (
-      <Map center={center} zoom={this.state.zoom} zoomControl={false}>
+      <Map center={center} zoom={this.state.zoom} zoomControl={false} style={{height: window.innerHeight}}>
         <ZoomControl position="bottomleft" />
         <LayersControl position="bottomleft">
           <BaseLayer checked name="OpenStreetMap">

@@ -58,7 +58,9 @@ class App extends Component {
           <h2>Procesing Tools</h2>
           <ReduceLayer addLayer={this.addLayer} layers={this.state.layers}/>
         </Menu>
-        <h1>ReactGIS</h1>
+        <div id="intro">
+          <h1>ReactGIS</h1>
+        </div>
         <div id="mapid">
           <MapDisplay layers={this.state.layers}/>
         </div>
