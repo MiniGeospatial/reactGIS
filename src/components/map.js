@@ -3,7 +3,6 @@ import { Map, TileLayer, Polygon, Popup, LayersControl, ZoomControl} from 'react
 import { toGoogle } from '../utils/polygonConvert';
 import { toWkt } from '../utils/wkt';
 const { BaseLayer, Overlay } = LayersControl;
-// import L from 'leaflet';
 
 export default class MapDisplay extends Component {
   constructor(props) {
