@@ -1,23 +1,28 @@
 body {
   margin: 10;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  font-family: Verdana,
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #2B2B2B;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: Verdana,
     monospace;
 }
 
 h1 {
   text-align: center;
+  color: #FF8c00;
+}
+
+h2 {
+  color: #FF8c00;
 }
 
 .leaflet-container {
-  height: 500px;
+  height: 934px;
   width: 100%;
 }
 
@@ -66,23 +71,23 @@ textarea {
 
 /* Color/shape of burger icon bars */
 .bm-burger-bars {
-  background: #373a47;
+  background: #AFAFAF;
 }
 
 /* Color/shape of burger icon bars on hover*/
 .bm-burger-bars-hover {
-  background: #a90000;
+  background: #FF8c00;
 }
 
 /* Position and sizing of clickable cross button */
 .bm-cross-button {
-  height: 24px;
-  width: 24px;
+  height: 48px;
+  width: 48px;
 }
 
 /* Color/shape of close button cross */
 .bm-cross {
-  background: #FFFAFA;
+  background: #AFAFAF;
 }
 
 /*Sidebar wrapper stylesNote: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases*/
@@ -93,15 +98,19 @@ textarea {
 
 /* General sidebar styles */
 .bm-menu {
-  background: rgba(169,169,169,0.8);
+  background: #2B2B2B;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
+  opacity: 0.8;
 }
 
 /* Morph shape necessary with bubble or elastic */
 .bm-morph-shape {
   fill: #373a47;
-  }/* Wrapper for item list */.bm-item-list {
+  }
+
+/* Wrapper for item list */
+.bm-item-list {
   color: #b8b7ad;
   padding: 0.8em;
   display: flex;

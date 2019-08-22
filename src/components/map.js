@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, TileLayer, Polygon, Popup, LayersControl } from 'react-leaflet';
+import { Map, TileLayer, Polygon, Popup, LayersControl, ZoomControl} from 'react-leaflet';
 import { toGoogle } from '../utils/polygonConvert';
 import { toWkt } from '../utils/wkt';
 const { BaseLayer, Overlay } = LayersControl;
@@ -11,13 +11,14 @@ export default class MapDisplay extends Component {
       this.state = {
         lat: 53.552796,
         lng: -2.3794198,
-        zoom: 16
+        zoom: 16,
+        layers: []
       }
   }
 
   centrePoint() {
     if (this.props.layers.length > 0) {
-      const lastPolygon = this.props.layers[0].nodes
+      const lastPolygon = this.props.layers[this.props.layers.length -1].nodes
       const latlngs = toGoogle(lastPolygon);
 
       const lats = latlngs.map(latlng => latlng[0]);
@@ -37,14 +38,12 @@ export default class MapDisplay extends Component {
 
   polygon() {
     if (this.props.layers.length > 0 ){
-      return( this.props.layers.map((p, index) => {
-        console.log(p);
+      return( this.props.layers.map((p) => {
         return (
           <Overlay checked name={p.name} >
             <Polygon positions={toGoogle(p.nodes)}
-              color="black"
-              weight="2"
-              key={index}>
+              color={`#${p.layerKey}`}
+              weight="2">
             <Popup>
               {toWkt(p.nodes)}
             </Popup>
@@ -59,7 +58,8 @@ export default class MapDisplay extends Component {
     const center = this.centrePoint()
 
     return (
-      <Map center={center} zoom={this.state.zoom}>
+      <Map center={center} zoom={this.state.zoom} zoomControl={false}>
+        <ZoomControl position="bottomleft" />
         <LayersControl position="bottomleft">
           <BaseLayer checked name="OpenStreetMap">
             <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'

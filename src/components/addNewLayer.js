@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Popup from "reactjs-popup";
 
+import { keyGen } from "../utils/keyGen";
 import { fromWkt } from '../utils/wkt';
 
 export default class NewLayer extends Component {
@@ -30,8 +31,13 @@ export default class NewLayer extends Component {
         name: this.state.name,
         geometryType: this.state.geometryType,
         nodes: this.state.nodes,
+        layerKey: keyGen(),
         }
     )
+  }
+
+  keyGen() {
+    return Math.random().toString(36).substr(2,9);
   }
 
   render() {
