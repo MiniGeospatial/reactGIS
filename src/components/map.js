@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Map, TileLayer, Polygon, Popup, LayersControl, ZoomControl} from 'react-leaflet';
+import { Map, TileLayer, Polygon, Popup, ZoomControl} from 'react-leaflet';
 import { toGoogle } from '../utils/polygonConvert';
 import { getExtents } from '../utils/extents';
 import { toWkt } from '../utils/wkt';
-const { BaseLayer, Overlay } = LayersControl;
 
 export default class MapDisplay extends Component {
   constructor(props) {
@@ -46,16 +45,14 @@ export default class MapDisplay extends Component {
       return( this.props.layers.map((p) => {
         if (p.visable) {
           return (
-            <Overlay checked name={p.name} key={p.layerKey+'_n'}>
-              <Polygon positions={toGoogle(p.nodes)}
-                color={`#${p.layerKey}`}
-                weight="2"
-                key={p.key}>
-                <Popup key={p.layerKey+'_p'}>
-                  {toWkt(p.nodes)}
-                </Popup>
-              </Polygon>
-            </Overlay>
+            <Polygon positions={toGoogle(p.nodes)}
+              color={`#${p.layerKey}`}
+              weight="2"
+              key={p.key}>
+              <Popup key={p.layerKey+'_p'}>
+                {toWkt(p.nodes)}
+              </Popup>
+            </Polygon>
           );
         } else {
           return null;
@@ -66,17 +63,13 @@ export default class MapDisplay extends Component {
 
   render() {
     return (
-      <Map bounds={this.bounds()} zoomControl={false} style={{height: this.state.height}}>
-        <LayersControl position="bottomright">
-          <BaseLayer checked name="OpenStreetMap">
-            <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-              attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-              maxZoom="18"
-            />
-          </BaseLayer>
-          {this.polygon()}
-        </LayersControl>
-        <ZoomControl position="bottomright" />
+      <Map bounds={this.bounds()} zoomControl={false} style={{height: this.state.height}} useFlyTo={true}>
+        <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+          maxZoom="18"
+        />
+        {this.polygon()}
+        <ZoomControl position="bottomleft" />
       </Map>
     )
   }

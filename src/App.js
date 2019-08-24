@@ -107,27 +107,7 @@ class App extends Component {
           <MapDisplay layers={this.state.layers}/>
         </div>
       </div>
-    )
-    // return (
-    //   <div id="App">
-    //     <div id="intro">
-    //       <Menu left isOpen={this.state.isMenuOpen} onStateChange={this.openMenu}>
-    //         <h2>Layer Tools</h2>
-    //         <NewLayer addLayer={this.addLayer}/>
-    //         <RemoveLayer
-    //           layers={this.state.layers}
-    //           removeLayer={this.removeLayer} />
-    //         <h2>Procesing Tools</h2>
-    //         <ReduceLayer addLayer={this.addLayer} layers={this.state.layers} />
-    //         <Extents addLayer={this.addLayer} layers={this.state.layers} />
-    //       </Menu>
-    //       <h1>gneiss gis</h1>
-    //     </div>
-    //     <div id="mapid">
-    //       <MapDisplay layers={this.state.layers}/>
-    //     </div>
-    //   </div>
-    // );
+    );
   }
 }
 

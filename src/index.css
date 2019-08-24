@@ -39,14 +39,15 @@
   position: absolute;
   top: 0;
   right: 25px;
-  font-size: 36px;
+  font-size: 60px;
   margin-left: 50px;
+  color: white;
 }
 
 .openButton {
   position: absolute;
   z-index: 15;
-  font-size: 36px;
+  font-size: 60px;
 
 }
 
@@ -129,25 +130,6 @@ h2 {
   color: #FF8c00;
   padding: 4px 8px 4px 8px;
 }
-
-/* #intro {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  background-color: rgba(0,0,0,0.5);
-  overflow-x: hidden;
-  padding-top: 20px;
-}
-
-#mapid {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1
-} */
 
 .leaflet-container {
   width: 100%;

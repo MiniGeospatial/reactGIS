@@ -35,8 +35,8 @@ export default class Extents extends Component {
     const extents = getExtentsPolygon(layerToCalculate[0].nodes);
     this.props.addLayer(
       {
-        name: this.state.name + '_extents',
-        geometryType: this.state.geometryType,
+        name: layerToCalculate[0].name + '_extents',
+        geometryType: layerToCalculate[0].geometryType,
         nodes: extents,
         layerKey: keyGen(),
         visable: this.state.visable,
