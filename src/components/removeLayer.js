@@ -24,12 +24,20 @@ export default class RemoveLayer extends Component {
     return layers
   }
 
+  getLayerKey() {
+     if (this.state.layerKey) {
+       return this.state.layerKey
+     } else {
+       return this.props.layers[0].layerKey
+     }
+  }
+
   selectLayer(event) {
     this.setState({layerKey: event.target.value})
   }
 
   onButtonPress() {
-    const layer = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey;
+    const layer = this.getLayerKey();
     this.props.removeLayer(layer);
     this.setState({layerKey: ''});
   }
@@ -47,10 +55,13 @@ export default class RemoveLayer extends Component {
             <select onChange={this.selectLayer}>
               {this.availbeLayers()}
             </select>
-            <button onClick={() => {
-              this.onButtonPress();
-              close();
-            }}>
+            <button
+              onClick={() => {
+                this.onButtonPress();
+                close();
+              }}
+              disabled={this.props.layers.length === 0}
+            >
               Remove
             </button>
           </div>

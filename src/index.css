@@ -31,6 +31,19 @@
   justify: left;
 }
 
+#sidenav textarea{
+  padding: 4px 8px 4px 8px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+  border: 1;
+  justify: left;
+  height: 120px;
+  width: 450px;
+}
+
 #sidenav span:hover {
   color: #f1f1f1;
 }
