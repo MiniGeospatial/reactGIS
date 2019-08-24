@@ -51,6 +51,7 @@ export default class MapDisplay extends Component {
               weight="2"
               key={p.key}>
               <Popup key={p.layerKey+'_p'}>
+                <h2>{p.name}</h2>
                 <h2>Area</h2>
                 <p>Area: {area(p.nodes)} m2</p>
                 <h2>Wkt</h2>
