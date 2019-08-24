@@ -34,7 +34,7 @@ export default class MapDisplay extends Component {
 
   bounds() {
     if (this.props.layers.length > 0 ) {
-      const lastPolygon = this.props.layers[this.props.layers.length - 1].nodes;
+      const lastPolygon = this.props.layers[0].nodes;
       return toGoogle(getExtents(lastPolygon));
     } else {
       return this.state.bounds;
@@ -44,17 +44,22 @@ export default class MapDisplay extends Component {
   polygon() {
     if (this.props.layers.length > 0 ){
       return( this.props.layers.map((p) => {
-        return (
-          <Overlay checked name={p.name} >
-            <Polygon positions={toGoogle(p.nodes)}
-              color={`#${p.layerKey}`}
-              weight="2">
-            <Popup>
-              {toWkt(p.nodes)}
-            </Popup>
-          </Polygon>
-        </Overlay>
-        )
+        if (p.visable) {
+          return (
+            <Overlay checked name={p.name} key={p.layerKey+'_n'}>
+              <Polygon positions={toGoogle(p.nodes)}
+                color={`#${p.layerKey}`}
+                weight="2"
+                key={p.key}>
+                <Popup key={p.layerKey+'_p'}>
+                  {toWkt(p.nodes)}
+                </Popup>
+              </Polygon>
+            </Overlay>
+          );
+        } else {
+          return null;
+        }
       }));
     }
   }

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { slide as Menu } from "react-burger-menu";
 import MapDisplay from './components/map';
 import NewLayer from './components/addNewLayer';
 import ReduceLayer from './components/reduceNodes';
 import RemoveLayer from './components/removeLayer';
+import Extents from './components/calculateExtents';
 
 class App extends Component {
   state = {
@@ -30,8 +30,9 @@ class App extends Component {
     this.setState({isMenuOpen: false});
   }
 
-  openMenu = (state) => {
-    this.setState({isMenuOpen: state.isOpen})
+  openMenu = () => {
+    console.log("called");
+    this.setState({isMenuOpen: true});
   }
 
   removeLayer = (layerKey) => {
@@ -42,29 +43,91 @@ class App extends Component {
   addLayer = (newLayer) => {
     if (newLayer.nodes.length > 0) {
       const allLayers = this.state.layers
-      allLayers.push(newLayer);
+      allLayers.unshift(newLayer);
       this.setState({layers: allLayers});
     }
   }
 
+  layerVisibilty = (event) => {
+    const layers = this.state.layers
+    const newLayers = layers.map((l) => {
+      if (l.layerKey === event.target.value) {
+        return {
+          name: l.name,
+          geometryType: l.geometryType,
+          nodes: l.nodes,
+          layerKey: l.layerKey,
+          visable: !l.visable,
+          }
+      } else {
+        return l
+      }
+    })
+    this.setState({layers: newLayers});
+  }
+
+  layerDisplay = () => {
+    if (this.state.layers.length > 0) {
+      return this.state.layers.map(l => {
+        return (
+          <div className="bm-item" key={l.layerKey + '_sidebar'}>
+            <label key={l.layerKey + '_name'} className="layerName">
+              {l.name}
+              <input type="checkbox"
+                value={l.layerKey}
+                checked={l.visable}
+                onChange={this.layerVisibilty}
+                className="checkBox"
+                key={l.layerKey + '_check'}/>
+            </label>
+          </div>
+        );
+      });
+    }
+  };
 
   render() {
     return (
-      <div id="App">
-        <div id="intro">
-          <Menu left isOpen={this.state.isMenuOpen} onStateChange={this.openMenu}>
-            <h2>Layer Tools</h2>
-            <NewLayer addLayer={this.addLayer}/>
-            <RemoveLayer layers={this.state.layers} removeLayer={this.removeLayer} />
-            <h2>Procesing Tools</h2>
-            <ReduceLayer addLayer={this.addLayer} layers={this.state.layers}/>
-          </Menu>
-          <h1>gneiss gis</h1>
+      <div className="App">
+        <div id="sidenav" className={this.state.isMenuOpen ? "LayerSidebarOpen" : "LayerSidebarClosed"}>
+          <span className="closeButton" onClick={this.closeMenu}>&times;</span>
+          <h2>Layers</h2>
+          {this.layerDisplay()}
+          <h2>Layer Tools</h2>
+          <NewLayer addLayer={this.addLayer} />
+          <RemoveLayer
+            layers={this.state.layers}
+            removeLayer={this.removeLayer} />
+          <h2>Processing Tools</h2>
+          <ReduceLayer addLayer={this.addLayer} layers={this.state.layers} />
+          <Extents addLayer={this.addLayer} layers={this.state.layers} />
         </div>
-        <div id="mapid">
+        <span className="openButton" onClick={this.openMenu}>&#9776;</span>
+        <div id={this.state.isMenuOpen ? "mainOpen" : "main"}>
           <MapDisplay layers={this.state.layers}/>
         </div>
-      </div>);
+      </div>
+    )
+    // return (
+    //   <div id="App">
+    //     <div id="intro">
+    //       <Menu left isOpen={this.state.isMenuOpen} onStateChange={this.openMenu}>
+    //         <h2>Layer Tools</h2>
+    //         <NewLayer addLayer={this.addLayer}/>
+    //         <RemoveLayer
+    //           layers={this.state.layers}
+    //           removeLayer={this.removeLayer} />
+    //         <h2>Procesing Tools</h2>
+    //         <ReduceLayer addLayer={this.addLayer} layers={this.state.layers} />
+    //         <Extents addLayer={this.addLayer} layers={this.state.layers} />
+    //       </Menu>
+    //       <h1>gneiss gis</h1>
+    //     </div>
+    //     <div id="mapid">
+    //       <MapDisplay layers={this.state.layers}/>
+    //     </div>
+    //   </div>
+    // );
   }
 }
 
