@@ -21,7 +21,7 @@ export default class Extents extends Component {
   }
 
   onButtonPress(event) {
-    const layerKey = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey
+    const layerKey = this.getLayerKey();
     const layerToCalculate = this.props.layers.filter(
       l => l.layerKey === layerKey
     );
@@ -36,6 +36,14 @@ export default class Extents extends Component {
       }
     )
     this.setState({layerKey: ''})
+  }
+
+  getLayerKey() {
+     if (this.state.layerKey) {
+       return this.state.layerKey
+     } else {
+       return this.props.layers[0].layerKey
+     }
   }
 
   selectLayer(event) {
@@ -70,10 +78,13 @@ export default class Extents extends Component {
             <select onChange={this.selectLayer}>
               {this.avaliableLayers()}
             </select>
-            <button onClick={() => {
-              this.onButtonPress();
-              close();
-            }}>
+            <button
+              onClick={() => {
+                this.onButtonPress();
+                close();
+              }}
+              disabled={this.props.layers.length === 0}
+            >
               Calculate
             </button>
           </div>

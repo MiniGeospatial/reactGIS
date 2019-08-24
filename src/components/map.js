@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Map, TileLayer, Polygon, Popup, ZoomControl} from 'react-leaflet';
 import { toGoogle } from '../utils/polygonConvert';
 import { getExtents } from '../utils/extents';
+import { area } from '../utils/area';
 import { toWkt } from '../utils/wkt';
 
 export default class MapDisplay extends Component {
@@ -50,7 +51,11 @@ export default class MapDisplay extends Component {
               weight="2"
               key={p.key}>
               <Popup key={p.layerKey+'_p'}>
-                {toWkt(p.nodes)}
+                <h2>{p.name}</h2>
+                <h2>Area</h2>
+                <p>Area: {area(p.nodes)} m2</p>
+                <h2>Wkt</h2>
+                <p>{toWkt(p.nodes)}</p>
               </Popup>
             </Polygon>
           );

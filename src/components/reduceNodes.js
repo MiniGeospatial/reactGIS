@@ -23,7 +23,7 @@ export default class ReduceLayer extends Component {
   }
 
   onButtonPress(event) {
-    const layerKey = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey;
+    const layerKey = this.getLayerKey();
     const layerToReduce = this.props.layers.filter(l => l.layerKey === layerKey);
     const reducedNodes = dp(layerToReduce[0].nodes, this.state.tolerance)
     this.props.addLayer(
@@ -36,6 +36,14 @@ export default class ReduceLayer extends Component {
       }
     )
     this.setState({layerKey: ''});
+  }
+
+  getLayerKey() {
+     if (this.state.layerKey) {
+       return this.state.layerKey
+     } else {
+       return this.props.layers[0].layerKey
+     }
   }
 
   selectLayer(event) {
@@ -83,7 +91,9 @@ export default class ReduceLayer extends Component {
               defaultValue="1"/>
               <p>LayerName</p>
               <input onChange={this.updateLayerName}/>
-            <button onClick={() => {
+            <button
+              disabled={this.props.layers.length === 0}
+              onClick={() => {
               this.onButtonPress();
               close();
             }}>
