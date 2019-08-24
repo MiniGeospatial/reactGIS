@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import Popup from 'reactjs-popup';
-
-import { dp } from '../utils/dp';
 import { keyGen } from '../utils/keyGen';
+import { getExtentsPolygon } from '../utils/extents';
 
-export default class ReduceLayer extends Component {
+export default class Extents extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,18 +18,26 @@ export default class ReduceLayer extends Component {
     this.avaliableLayers = this.avaliableLayers.bind(this);
     this.updateLayerName = this.updateLayerName.bind(this);
     this.selectLayer = this.selectLayer.bind(this);
-    this.updateTolerance = this.updateTolerance.bind(this);
+  }
+
+  componentWillReceiveProps() {
+    const firstLayer = this.props.layers[0]
+    if (firstLayer) {
+      this.setState({layerKey: firstLayer.layerKey});
+    }
   }
 
   onButtonPress(event) {
-    const layer = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey
-    const layerToReduce = this.props.layers.filter(l => l.layerKey === layer);
-    const reducedNodes = dp(layerToReduce[0].nodes, this.state.tolerance)
+    console.log(this.props.layers);
+    const layerToCalculate = this.props.layers.filter(
+      l => l.layerKey === this.state.layerKey
+    );
+    const extents = getExtentsPolygon(layerToCalculate[0].nodes);
     this.props.addLayer(
       {
-        name: this.state.name,
-        geometryType: this.state.geometryType,
-        nodes: reducedNodes,
+        name: layerToCalculate[0].name + '_extents',
+        geometryType: layerToCalculate[0].geometryType,
+        nodes: extents,
         layerKey: keyGen(),
         visable: this.state.visable,
       }
@@ -45,48 +52,38 @@ export default class ReduceLayer extends Component {
     this.setState({name: event.target.value})
   }
 
-  updateTolerance(event) {
-    this.setState({tolerance: event.target.value})
-  }
-
   avaliableLayers() {
-    const layers = this.props.layers.map(l => {
+    const layers = this.props.layers.map((l, index) => {
       return (
-        <option value={l.layerKey} key={l.layerKey + '_rno'}>
+        <option value={l.layerKey}>
           {l.name}
         </option>
       )
     })
+    if (this.props.layers.lenght > 0) {
+      this.setState({name: this.props.layers[0].name})
+    }
     return layers
   }
 
   render() {
-    return (
+    return(
       <Popup
-        trigger={<div className="bm-item">Reduce Complexity</div>}
+        trigger={<div className="bm-item">Calculate Extents</div>}
         modal
-        key='reduce_nodes'>
+        key='calculate_extentes'>
         {close => (
           <div>
-            <h2>Reduce Polygon</h2>
+            <h2>Calculate Extents</h2>
             <p>Layer Name</p>
             <select onChange={this.selectLayer}>
               {this.avaliableLayers()}
             </select>
-            <p>Tolerance</p>
-            <input
-              type="number"
-              max="10"
-              min="1"
-              onChange={this.updateTolerance}
-              defaultValue="1"/>
-              <p>LayerName</p>
-              <input onChange={this.updateLayerName}/>
             <button onClick={() => {
               this.onButtonPress();
               close();
             }}>
-              Add Layer
+              Calculate
             </button>
           </div>
         )}

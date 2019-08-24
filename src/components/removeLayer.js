@@ -11,12 +11,12 @@ export default class RemoveLayer extends Component {
     this.onButtonPress = this.onButtonPress.bind(this);
   }
 
-  componentWillReceiveProps() {
-    const firstLayer = this.props.layers[0]
-    if (firstLayer) {
-      this.setState({layerKey: firstLayer.layerKey});
-    }
-  }
+  // componentWillReceiveProps() {
+  //   const firstLayer = this.props.layers[0]
+  //   if (firstLayer) {
+  //     this.setState({layerKey: firstLayer.layerKey});
+  //   }
+  // }
 
   availbeLayers() {
     const layers = this.props.layers.map(l => {
@@ -30,20 +30,21 @@ export default class RemoveLayer extends Component {
   }
 
   selectLayer(event) {
-    this.setState({key: event.target.value})
+    this.setState({layerKey: event.target.value})
   }
 
-  onButtonPress(event) {
-    this.props.removeLayer(
-      this.state.layerKey
-    )
+  onButtonPress() {
+    const layer  = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey
+    console.log(layer);
+    this.props.removeLayer(layer)
   }
 
   render() {
     return (
       <Popup
         trigger={<div className="bm-item">RemoveLayer</div>}
-        modal >
+        modal
+        key='remove_layer'>
         {close => (
           <div>
             <h2>Remove Layer</h2>

@@ -32,6 +32,7 @@ export default class NewLayer extends Component {
         geometryType: this.state.geometryType,
         nodes: this.state.nodes,
         layerKey: keyGen(),
+        visable: true,
         }
     )
   }
@@ -44,7 +45,8 @@ export default class NewLayer extends Component {
     return (
       <Popup
         trigger={<div className="bm-item">Add New Layer</div>}
-        modal >
+        modal
+        key='add_layer'>
         {close => (
           <div>
             <h2>Add New Layer</h2>
