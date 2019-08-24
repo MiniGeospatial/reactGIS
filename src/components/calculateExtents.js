@@ -20,17 +20,10 @@ export default class Extents extends Component {
     this.selectLayer = this.selectLayer.bind(this);
   }
 
-  componentWillReceiveProps() {
-    const firstLayer = this.props.layers[0]
-    if (firstLayer) {
-      this.setState({layerKey: firstLayer.layerKey});
-    }
-  }
-
   onButtonPress(event) {
-    console.log(this.props.layers);
+    const layerKey = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey
     const layerToCalculate = this.props.layers.filter(
-      l => l.layerKey === this.state.layerKey
+      l => l.layerKey === layerKey
     );
     const extents = getExtentsPolygon(layerToCalculate[0].nodes);
     this.props.addLayer(
@@ -42,6 +35,7 @@ export default class Extents extends Component {
         visable: this.state.visable,
       }
     )
+    this.setState({layerKey: ''})
   }
 
   selectLayer(event) {
@@ -60,9 +54,6 @@ export default class Extents extends Component {
         </option>
       )
     })
-    if (this.props.layers.lenght > 0) {
-      this.setState({name: this.props.layers[0].name})
-    }
     return layers
   }
 

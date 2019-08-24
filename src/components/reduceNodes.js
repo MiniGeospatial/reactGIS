@@ -23,8 +23,8 @@ export default class ReduceLayer extends Component {
   }
 
   onButtonPress(event) {
-    const layer = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey
-    const layerToReduce = this.props.layers.filter(l => l.layerKey === layer);
+    const layerKey = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey;
+    const layerToReduce = this.props.layers.filter(l => l.layerKey === layerKey);
     const reducedNodes = dp(layerToReduce[0].nodes, this.state.tolerance)
     this.props.addLayer(
       {
@@ -35,6 +35,7 @@ export default class ReduceLayer extends Component {
         visable: this.state.visable,
       }
     )
+    this.setState({layerKey: ''});
   }
 
   selectLayer(event) {
@@ -56,7 +57,7 @@ export default class ReduceLayer extends Component {
           {l.name}
         </option>
       )
-    })
+    });
     return layers
   }
 

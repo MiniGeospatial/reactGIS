@@ -11,12 +11,7 @@ export default class RemoveLayer extends Component {
     this.onButtonPress = this.onButtonPress.bind(this);
   }
 
-  // componentWillReceiveProps() {
-  //   const firstLayer = this.props.layers[0]
-  //   if (firstLayer) {
-  //     this.setState({layerKey: firstLayer.layerKey});
-  //   }
-  // }
+  componen
 
   availbeLayers() {
     const layers = this.props.layers.map(l => {
@@ -25,7 +20,7 @@ export default class RemoveLayer extends Component {
           {l.name}
         </option>
       )
-    })
+    });
     return layers
   }
 
@@ -34,9 +29,9 @@ export default class RemoveLayer extends Component {
   }
 
   onButtonPress() {
-    const layer  = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey
-    console.log(layer);
-    this.props.removeLayer(layer)
+    const layer = this.state.layerKey ? this.state.layerKey : this.props.layers[0].layerKey;
+    this.props.removeLayer(layer);
+    this.setState({layerKey: ''});
   }
 
   render() {

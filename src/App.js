@@ -97,14 +97,15 @@ class App extends Component {
           <NewLayer addLayer={this.addLayer} />
           <RemoveLayer
             layers={this.state.layers}
-            removeLayer={this.removeLayer} />
+            removeLayer={this.removeLayer}
+            key={this.state.layers.length > 0 ? this.state.layers[0].key : 'blah'}/>
           <h2>Processing Tools</h2>
           <ReduceLayer addLayer={this.addLayer} layers={this.state.layers} />
           <Extents addLayer={this.addLayer} layers={this.state.layers} />
         </div>
         <span className="openButton" onClick={this.openMenu}>&#9776;</span>
         <div id={this.state.isMenuOpen ? "mainOpen" : "main"}>
-          <MapDisplay layers={this.state.layers}/>
+          <MapDisplay layers={this.state.layers} key={1}/>
         </div>
       </div>
     );
