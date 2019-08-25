@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Map, TileLayer, Polygon, Popup, ZoomControl} from 'react-leaflet';
-import { toGoogle } from '../utils/polygonConvert';
+import { Map, TileLayer, Polygon, Polyline, Marker, Popup, ZoomControl} from 'react-leaflet';
+import { toGoogle, toGooglePoint } from '../utils/polygonConvert';
 import { getExtents } from '../utils/extents';
 import { area } from '../utils/area';
 import { toWkt } from '../utils/wkt';
@@ -34,6 +34,11 @@ export default class MapDisplay extends Component {
 
   bounds() {
     if (this.props.layers.length > 0 ) {
+      if (this.props.layers[0].geometryType === 'POINT') {
+        const point = this.props.layers[0].nodes;
+        const box = [[point[0]-100, point[1]-100], [point[0]+100, point[1]+100]];
+        return toGoogle(getExtents(box));
+      }
       const lastPolygon = this.props.layers[0].nodes;
       return toGoogle(getExtents(lastPolygon));
     } else {
@@ -41,29 +46,67 @@ export default class MapDisplay extends Component {
     }
   }
 
-  polygon() {
-    if (this.props.layers.length > 0 ){
-      return( this.props.layers.map((p) => {
-        if (p.visable) {
-          return (
-            <Polygon positions={toGoogle(p.nodes)}
-              color={`#${p.layerKey}`}
-              weight="2"
-              key={p.key}>
-              <Popup key={p.layerKey+'_p'}>
-                <h2>{p.name}</h2>
-                <h2>Area</h2>
-                <p>Area: {area(p.nodes)} m2</p>
-                <h2>Wkt</h2>
-                <p>{toWkt(p.nodes)}</p>
-              </Popup>
-            </Polygon>
-          );
-        } else {
-          return null;
-        }
-      }));
-    }
+  visableLayers() {
+    const visable = this.props.layers.filter(layer => layer.visable)
+    return visable.map((layer) => {
+      if (layer.geometryType === 'POLYGON') {
+        return this.polygon(layer);
+      }
+      else if (layer.geometryType === 'LINESTRING') {
+        return this.linestring(layer);
+      }
+      else if (layer.geometryType === 'POINT') {
+        return this.point(layer);
+      }
+      return null;
+    });
+  }
+
+  point(layer) {
+    return (
+      <Marker position={toGooglePoint(layer.nodes)}
+        color={`#${layer.layerKey}`}
+        key={layer.layerKey}
+      >
+        <Popup key={layer.layerKey + '_p'}>
+          <h2>{layer.Name}</h2>
+          <h2>Wkt</h2>
+          <p>{toWkt(layer.geometryType, layer.nodes)}</p>
+        </Popup>
+      </Marker>
+    )
+  }
+
+  linestring(layer) {
+    return (
+      <Polyline positions={toGoogle(layer.nodes)}
+        color={`#${layer.layerKey}`}
+        weight="2"
+        key={layer.key}>
+        <Popup key={layer.layerKey+'_p'}>
+          <h2>{layer.name}</h2>
+          <h2>Wkt</h2>
+          <p>{toWkt(layer.geometryType, layer.nodes)}</p>
+        </Popup>
+      </Polyline>
+    )
+  }
+
+  polygon(layer) {
+    return (
+      <Polygon positions={toGoogle(layer.nodes)}
+        color={`#${layer.layerKey}`}
+        weight="2"
+        key={layer.key}>
+        <Popup key={layer.layerKey+'_p'}>
+          <h2>{layer.name}</h2>
+          <h2>Area</h2>
+          <p>Area: {area(layer.nodes)} m2</p>
+          <h2>Wkt</h2>
+          <p>{toWkt(layer.geometryType, layer.nodes)}</p>
+        </Popup>
+      </Polygon>
+    );
   }
 
   render() {
@@ -73,7 +116,7 @@ export default class MapDisplay extends Component {
           attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
           maxZoom="18"
         />
-        {this.polygon()}
+        {this.visableLayers()}
         <ZoomControl position="bottomleft" />
       </Map>
     )

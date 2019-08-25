@@ -31,7 +31,6 @@ class App extends Component {
   }
 
   openMenu = () => {
-    console.log("called");
     this.setState({isMenuOpen: true});
   }
 

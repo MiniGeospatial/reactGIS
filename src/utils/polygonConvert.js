@@ -9,9 +9,19 @@ const toGoogle = (polygon) => {
   return lnglat.map(xy => xy.reverse());
 }
 
+const toGooglePoint = (point) => {
+  const lnglat = proj4('britNatGrid').inverse(point);
+  return lnglat.reverse();
+}
+
 const toBritNatGrid = (polygon) => {
   const lnglat = polygon.map(xy => xy.reverse());
   return lnglat.map(xy => proj4('britNatGrid').forward(xy));
 }
 
-export {toBritNatGrid, toGoogle};
+const toBritNatGridPoint = (point) => {
+  const lnglat = point.reverse();
+  return proj4('britNatGrid').forward(lnglat);
+}
+
+export {toBritNatGrid, toBritNatGridPoint, toGoogle, toGooglePoint};

@@ -9,8 +9,7 @@ export default class NewLayer extends Component {
     super(props);
     this.state = {
       name: '',
-      geometryType: 'POLYGON',
-      nodes: '',
+      wkt: '',
     }
     this.updateLayerName = this.updateLayerName.bind(this);
     this.updateNodes = this.updateNodes.bind(this);
@@ -22,15 +21,16 @@ export default class NewLayer extends Component {
   }
 
   updateNodes(event) {
-    this.setState({nodes: fromWkt(event.target.value)})
+    this.setState({wkt: event.target.value})
   }
 
   onButtonPress(event) {
+    const geometry = fromWkt(this.state.wkt);
     this.props.addLayer(
       {
         name: this.state.name,
-        geometryType: this.state.geometryType,
-        nodes: this.state.nodes,
+        geometryType: geometry.geometryType,
+        nodes: geometry.nodes,
         layerKey: keyGen(),
         visable: true,
         }

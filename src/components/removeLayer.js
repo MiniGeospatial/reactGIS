@@ -45,7 +45,7 @@ export default class RemoveLayer extends Component {
   render() {
     return (
       <Popup
-        trigger={<div className="bm-item">RemoveLayer</div>}
+        trigger={<div className="bm-item">Remove Layer</div>}
         modal
         key='remove_layer'>
         {close => (
