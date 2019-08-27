@@ -11,6 +11,7 @@ class App extends Component {
     lng: -0.09,
     zoom: 5,
     isMenuOpen: false,
+    tabOpen: 'newLayersTab',
     layers: [],
   }
 
@@ -85,22 +86,46 @@ class App extends Component {
     }
   };
 
+  mapLayersTab = (event) => {
+    this.setState({tabOpen: "mapLayersTab"});
+  }
+
+  newLayersTab = (event) => {
+    this.setState({tabOpen: "newLayersTab"});
+  }
+
+  processingTab = (event) => {
+    this.setState({tabOpen: "processingTab"});
+  }
+
+
   render() {
     return (
       <div className="App">
         <div id="sidenav" className={this.state.isMenuOpen ? "LayerSidebarOpen" : "LayerSidebarClosed"}>
           <span className="closeButton" onClick={this.closeMenu}>&times;</span>
-          <h2>Layers</h2>
-          {this.layerDisplay()}
-          <h2>Layer Tools</h2>
-          <NewLayer addLayer={this.addLayer} />
-          <RemoveLayer
-            layers={this.state.layers}
-            removeLayer={this.removeLayer}
-            key={this.state.layers.length > 0 ? this.state.layers[0].key : 'blah'}/>
-          <h2>Processing Tools</h2>
-          <ReduceLayer addLayer={this.addLayer} layers={this.state.layers} />
-          <Extents addLayer={this.addLayer} layers={this.state.layers} />
+          <div className={this.state.tabOpen === 'mapLayersTab' ? 'tabOn' : 'tabOff'}>
+            <h2>Layers</h2>
+            {this.layerDisplay()}
+          </div>
+          <div className={this.state.tabOpen === 'newLayersTab' ? 'tabOn' : 'tabOff'}>
+            <h2>Layer Tools</h2>
+            <NewLayer addLayer={this.addLayer} />
+            <RemoveLayer
+              layers={this.state.layers}
+              removeLayer={this.removeLayer}
+              key={this.state.layers.length > 0 ? this.state.layers[0].key : 'blah'}/>
+          </div>
+          <div className={this.state.tabOpen === 'processingTab' ? 'tabOn' : 'tabOff'}>
+            <h2>Processing Tools</h2>
+            <ReduceLayer addLayer={this.addLayer} layers={this.state.layers} />
+            <Extents addLayer={this.addLayer} layers={this.state.layers} />
+          </div>
+          <div className="tabBar">
+            <span className="tabButton" onClick={this.mapLayersTab}>ML</span>
+            <span className="tabButton" onClick={this.newLayersTab}>NL</span>
+            <span className="tabButton" onClick={this.processingTab}>PT</span>
+          </div>
         </div>
         <span className="openButton" onClick={this.openMenu}>&#9776;</span>
         <div id={this.state.isMenuOpen ? "mainOpen" : "main"}>

@@ -46,6 +46,7 @@
 
 #sidenav span:hover {
   color: #f1f1f1;
+  cursor: pointer;
 }
 
 #sidenav .closeButton {
@@ -67,7 +68,11 @@
 #sidenav .layerName {
   float: left;
   display: inline;
-  width: 100%
+  width: 100%;
+}
+
+#sidenav .layerName:hover {
+  cursor: pointer;
 }
 
 #sidenav .checkBox {
@@ -87,12 +92,42 @@
   padding: 4px 8px 4px 8px;
   text-decoration: none;
   font-size: 18px;
-  color: #818181;
+  color: white;
   display: block;
   transition: 0.3s;
-  background-color: #111;
+  background-color: grey;
   border: 0;
   justify: left;
+}
+
+#sidenav .bm-item:hover{
+  cursor: pointer;
+}
+
+#sidenav .tabOff{
+  display: none;
+}
+
+#sidenav .tabOn {
+  display: block;
+  transition: 0.3s
+}
+
+#sidenav .tabBar{
+  position: fixed;
+  bottom: 0;
+  overflow: hidden;
+  color: white;
+  width: inherit;
+  display: inline-block;
+}
+
+#sidenav .tabButton{
+  width: 33.3%;
+  float: left;
+  height: 75px;
+  text-align: center;
+  background-color: grey;
 }
 
 .LayerSidebarOpen {
@@ -101,6 +136,10 @@
 
 .LayerSidebarClosed {
   width: 0px;
+}
+
+span:hover {
+  cursor: pointer;
 }
 
 body {
@@ -136,8 +175,6 @@ code {
   z-index: 10;
   background-color: rgba(0,0,0,0.5);
 }
-
-
 
 h2 {
   color: #FF8c00;
