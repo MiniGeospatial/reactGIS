@@ -66,9 +66,8 @@
 }
 
 #sidenav .layerName {
-  float: left;
-  display: inline;
-  width: 100%;
+  overflow: auto;
+  width: 200px;
 }
 
 #sidenav .layerName:hover {

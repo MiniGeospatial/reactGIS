@@ -71,15 +71,15 @@ class App extends Component {
       return this.state.layers.map(l => {
         return (
           <div className="bm-item" key={l.layerKey + '_sidebar'}>
-            <label key={l.layerKey + '_name'} className="layerName">
+            <span key={l.layerKey + '_name'} className="layerName">
               {l.name}
-              <input type="checkbox"
-                value={l.layerKey}
-                checked={l.visable}
-                onChange={this.layerVisibilty}
-                className="checkBox"
-                key={l.layerKey + '_check'}/>
-            </label>
+            </span>
+            <input type="checkbox"
+              value={l.layerKey}
+              checked={l.visable}
+              onChange={this.layerVisibilty}
+              className="checkBox"
+              key={l.layerKey + '_check'}/>
           </div>
         );
       });
