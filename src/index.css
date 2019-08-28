@@ -4,7 +4,7 @@
   z-index: 20;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: #3a3a3a;
   overflow-x: hidden;
   padding-top: 60px;
   transition: 0.5s;
@@ -92,16 +92,18 @@
   padding: 4px 8px 4px 8px;
   text-decoration: none;
   font-size: 18px;
-  color: white;
+  color: #d7d7d7;
   display: block;
   transition: 0.3s;
-  background-color: grey;
+  background-color: #404040;
   border: 0;
   justify: left;
 }
 
 #sidenav .bm-item:hover{
   cursor: pointer;
+  background-color: #5a5a5a;
+  font-size: 20px;
 }
 
 #sidenav .tabOff{
@@ -127,7 +129,24 @@
   float: left;
   height: 75px;
   text-align: center;
-  background-color: grey;
+  background-color: #404040;
+  font-size: 48px;
+  transition: 0.5s;
+}
+
+#sidenav .tabButtonActive{
+  width: 33.3%;
+  float: left;
+  height: 75px;
+  text-align: center;
+  background-color: #5a5a5a;
+  font-size: 48px;
+  transition: 0.5s;
+}
+
+#sidenav .tabButton:hover{
+  background-color: #5a5a5a;
+  font-size: 52px;
 }
 
 .LayerSidebarOpen {
@@ -150,30 +169,6 @@ body {
 
 code {
   font-family: Verdana;
-}
-
-.title {
-  text-align: center;
-  color: #FF8c00;
-  opacity: 1;
-  font-family: 'Brush Script MT', cursive;
-  font-size: 48px;
-  text-shadow: 1px 1px 1px #333;
-  text-transform: capitalize;
-  letter-spacing: 10px;
-  font-weight: 10px;
-  margin: 10px;
-}
-
-.header {
-  position: absolute;
-  top: 0;
-  left: 15%;
-  right: 15%;
-  width: 70%;
-  height: 90px;
-  z-index: 10;
-  background-color: rgba(0,0,0,0.5);
 }
 
 h2 {

@@ -122,9 +122,21 @@ class App extends Component {
             <Extents addLayer={this.addLayer} layers={this.state.layers} />
           </div>
           <div className="tabBar">
-            <span className="tabButton" onClick={this.mapLayersTab}>ML</span>
-            <span className="tabButton" onClick={this.newLayersTab}>NL</span>
-            <span className="tabButton" onClick={this.processingTab}>PT</span>
+            <span
+              className={this.state.tabOpen === 'mapLayersTab' ? 'tabButtonActive' : 'tabButton'}
+              onClick={this.mapLayersTab}>
+              &#9776;
+            </span>
+            <span
+              className={this.state.tabOpen === 'newLayersTab' ? 'tabButtonActive' : 'tabButton'}
+              onClick={this.newLayersTab}>
+              +
+            </span>
+            <span
+              className={this.state.tabOpen === 'processingTab' ? 'tabButtonActive' : 'tabButton'}
+              onClick={this.processingTab}>
+              &#128736;
+            </span>
           </div>
         </div>
         <span className="openButton" onClick={this.openMenu}>&#9776;</span>
